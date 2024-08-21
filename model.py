@@ -1,13 +1,14 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-from sqlalchemy.sql import func
-from database import Base
+from datetime import datetime
+
+Base = declarative_base()
 
 
 class User(Base):
-    __tablename__ = "users"
-
-    id = Column(Integer, primary_key=True, index=True)
+    __tablename__ = 'user_detail'
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     username = Column(String, unique=True, index=True)
     password = Column(String)
 
@@ -15,13 +16,11 @@ class User(Base):
 
 
 class Note(Base):
-    __tablename__ = "notes"
-
-    id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, index=True)
-    content = Column(Text)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
-    owner_id = Column(Integer, ForeignKey('users.id'))
+    __tablename__ = 'notes'
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    title = Column(String)
+    description = Column(String)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    user_id = Column(Integer, ForeignKey('user_detail.id'))
 
     owner = relationship("User", back_populates="notes")
