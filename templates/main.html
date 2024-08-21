@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notes</title>
+</head>
+<body>
+    <h2>Notes</h2>
+    <a href="/create-note">Create New Note</a>
+    <form action="/logout" method="post">
+        <button type="submit">Logout</button>
+    </form>
+    <ul>
+        {% for note in notes %}
+            <li>
+                <h3>{{ note.title }}</h3>
+                <p>{{ note.description }}</p>
+                <form action="/edit-note/{{ loop.index0 }}" method="post">
+                    <button type="submit">Edit</button>
+                </form>
+                <form action="/delete-note/{{ note.id }}" method="post">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
